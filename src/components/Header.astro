@@ -1,0 +1,15 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const pathname = Astro.url.pathname;
+const isActive = (prefix: string) =>
+  prefix === '/' ? pathname === '/' : pathname === prefix || pathname.startsWith(prefix + '/');
+---
+<header class="site-header">
+  <a href="/" class="brand">Conor Svensson</a>
+  <nav>
+    <a href="/writing" class:list={[{ active: isActive('/writing') }]}>Writing</a>
+    <a href="/about" class:list={[{ active: isActive('/about') }]}>About</a>
+    <ThemeToggle />
+  </nav>
+</header>

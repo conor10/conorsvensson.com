@@ -1,0 +1,44 @@
+---
+layout: ../layouts/ProseLayout.astro
+title: About
+description: Conor Svensson — technical founder working across Web3 infrastructure and agentic engineering.
+bodyClass: about
+---
+
+# About
+
+I'm Conor Svensson, a technical founder based in London. I created [Web3j](https://github.com/LFDT-web3j/web3j) in 2016 — still the most widely used JVM and Android library for Ethereum, with around 4 million downloads a month. I've spent the last decade building developer tools and infrastructure for blockchains and the teams that use them.
+
+Currently I'm building [Enscribe](https://enscribe.xyz/), an identity layer for onchain teams, and writing here about agentic engineering as it's reshaping how I work day-to-day.
+
+## Things I've created
+
+[Web3j](https://github.com/LFDT-web3j/web3j) is the Java and Android integration library for Ethereum. First released in 2016, it's still going strong in 2026.
+
+[Enscribe](https://www.enscribe.xyz) is a naming layer for onchain teams, providing human-readable identities for the wallets, contracts and agents that make up modern protocols. Built on ENS.
+
+[Web3 Labs](https://www.web3labs.com) is a blockchain technology company that works with organisations to build and execute their blockchain strategy. I'm proud of the customers we worked with over the years including Microsoft, J.P. Morgan, Vodafone, ConsenSys and R3.
+
+[Dev Tools Guild](https://devtoolsguild.xyz) unites Ethereum developer tool projects to fund critical infrastructure and improve coordination between protocol and tooling teams.
+
+[Chainlens](https://www.chainlens.com) is an EVM blockchain explorer as a service, offering APIs, analytics, and smart contract exploration. 
+
+You can see other projects on my [GitHub page](https://github.com/conor10).
+
+## Writing & media
+
+I wrote a book, [The Blockchain Innovator's Handbook](https://www.amazon.co.uk/Blockchain-Innovators-Handbook-understanding-succeeding-ebook/dp/B09MM7D3JF) which was aimed at corporate leaders interested in understanding and working with blockchain technology. Raoul Pal wrote the foreword, and a number of others were kind enough to provide testimonials, including Mark Russinovich, CTO of Microsoft Azure, and Joseph Lubin, co-founder of Ethereum and founder of ConsenSys.
+
+For a number of years I hosted the [Web3 Innovation Podcast](https://podcast.web3labs.com), where I had conversations with leaders across Web3.
+
+I also published a weekly newsletter, [Web3 Perspectives](https://web3perspectives.com/), where I shared my opinions on web3 and where it was heading.
+
+## Connect
+
+[X](https://x.com/ConorSvensson) · [LinkedIn](https://www.linkedin.com/in/conorsvensson) · [GitHub](https://github.com/conor10) · [Email](mailto:hi@conorsvensson.com)
+
+---
+
+Before 2015 I worked on building trading platforms at some of the world's largest banks including UBS, Deutsche Bank and ANZ. I also studied quantitative finance, which has been useful context for my AI work.
+
+Outside of work I train Brazilian Jiu-Jitsu and Judo, play strategy games, and coach youth basketball.

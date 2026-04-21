@@ -1,0 +1,26 @@
+---
+import { BUTTONDOWN_USERNAME } from '../consts';
+
+interface Props {
+  heading?: string;
+  description?: string;
+}
+
+const {
+  heading = 'Subscribe',
+  description = 'Occasional notes on what I\'m building and what I\'m reading. No tracking, no spam.',
+} = Astro.props;
+---
+<aside class="buttondown">
+  <h3>{heading}</h3>
+  <p>{description}</p>
+  <form
+    action={`https://buttondown.com/api/emails/embed-subscribe/${BUTTONDOWN_USERNAME}`}
+    method="post"
+    target="popupwindow"
+    onsubmit={`window.open('https://buttondown.com/${BUTTONDOWN_USERNAME}', 'popupwindow')`}
+  >
+    <input type="email" name="email" placeholder="you@example.com" required />
+    <input type="submit" value="Subscribe" />
+  </form>
+</aside>

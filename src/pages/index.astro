@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Buttondown from '../components/Buttondown.astro';
+
+const posts = (await getCollection('writing', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+<BaseLayout>
+  <section class="intro">
+    {/* TODO: refine this intro paragraph. */}
+    <p>
+      I'm Conor — a technical founder working on agentic infrastructure and the
+      decentralised web. This is where I write about what I'm building and
+      what I'm learning along the way.
+    </p>
+  </section>
+
+  <div class="section-heading">Latest writing</div>
+  <ul class="post-list">
+    {posts.map((post) => (
+      <li>
+        <h3><a href={`/writing/${post.id}/`}>{post.data.title}</a></h3>
+        <FormattedDate date={post.data.date} />
+        {post.data.description && <p>{post.data.description}</p>}
+      </li>
+    ))}
+  </ul>
+  <p style="margin-top: 1rem;"><a href="/writing">All posts →</a></p>
+
+  <Buttondown />
+</BaseLayout>

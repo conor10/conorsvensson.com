@@ -1,0 +1,33 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  tags?: string[];
+}
+
+const { title, description, date, tags = [] } = Astro.props;
+---
+<BaseLayout
+  title={title}
+  description={description}
+  type="article"
+  publishedTime={date}
+>
+  <article class="prose">
+    <header>
+      <h1>{title}</h1>
+      <div class="post-meta">
+        <FormattedDate date={date} />
+        {tags.length > 0 && <span>·</span>}
+        {tags.map((t) => (
+          <a href={`/writing/?tag=${encodeURIComponent(t)}`} class="tag">{t}</a>
+        ))}
+      </div>
+    </header>
+    <slot />
+  </article>
+</BaseLayout>

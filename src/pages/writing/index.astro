@@ -1,0 +1,77 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Buttondown from '../../components/Buttondown.astro';
+
+const posts = (await getCollection('writing', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const tagCounts = new Map<string, number>();
+for (const post of posts) {
+  for (const tag of post.data.tags) {
+    tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+  }
+}
+const tags = [...tagCounts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+---
+<BaseLayout title="Writing" description="Essays and notes from Conor Svensson.">
+  <h1>Writing</h1>
+
+  {tags.length > 0 && (
+    <div class="tag-filter" id="tag-filter" role="toolbar" aria-label="Filter by tag">
+      <button class="tag active" type="button" data-tag="">All</button>
+      {tags.map(([t, n]) => (
+        <button class="tag" type="button" data-tag={t}>{t} <span style="opacity:0.6">({n})</span></button>
+      ))}
+    </div>
+  )}
+
+  <ul class="post-list" id="post-list">
+    {posts.map((post) => (
+      <li data-tags={post.data.tags.join(' ')}>
+        <h3><a href={`/writing/${post.id}/`}>{post.data.title}</a></h3>
+        <FormattedDate date={post.data.date} />
+        {post.data.description && <p>{post.data.description}</p>}
+        {post.data.tags.length > 0 && (
+          <div style="margin-top: 0.5rem;">
+            {post.data.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
+        )}
+      </li>
+    ))}
+  </ul>
+
+  <Buttondown />
+</BaseLayout>
+
+<script is:inline>
+  (function () {
+    const filter = document.getElementById('tag-filter');
+    const list = document.getElementById('post-list');
+    if (!filter || !list) return;
+
+    const applyTag = (tag) => {
+      filter.querySelectorAll('button.tag').forEach((btn) => {
+        btn.classList.toggle('active', (btn.getAttribute('data-tag') || '') === tag);
+      });
+      list.querySelectorAll('li').forEach((li) => {
+        const tags = (li.getAttribute('data-tags') || '').split(/\s+/).filter(Boolean);
+        li.hidden = tag !== '' && !tags.includes(tag);
+      });
+      const url = new URL(window.location.href);
+      if (tag) url.searchParams.set('tag', tag);
+      else url.searchParams.delete('tag');
+      history.replaceState(null, '', url.pathname + (url.search || ''));
+    };
+
+    filter.addEventListener('click', (e) => {
+      const t = e.target.closest('button.tag');
+      if (!t) return;
+      applyTag(t.getAttribute('data-tag') || '');
+    });
+
+    const urlTag = new URLSearchParams(location.search).get('tag') || '';
+    if (urlTag) applyTag(urlTag);
+  })();
+</script>
