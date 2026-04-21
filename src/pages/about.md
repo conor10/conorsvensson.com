@@ -7,6 +7,8 @@ bodyClass: about
 
 # About
 
+<img src="/headshot.jpg" alt="Conor Svensson" class="headshot" width="240" height="240" loading="eager" />
+
 I'm Conor Svensson, a technical founder based in London. I created [Web3j](https://github.com/LFDT-web3j/web3j) in 2016 — still the most widely used JVM and Android library for Ethereum, with around 4 million downloads a month. I've spent the last decade building developer tools and infrastructure for blockchains and the teams that use them.
 
 Currently I'm building [Enscribe](https://enscribe.xyz/), an identity layer for onchain teams, and writing here about agentic engineering as it's reshaping how I work day-to-day.
