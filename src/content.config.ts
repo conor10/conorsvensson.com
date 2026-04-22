@@ -5,20 +5,29 @@ const writing = defineCollection({
   loader: glob({
     pattern: '**/*.{md,mdx}',
     base: './src/content/writing',
-    // Derive the slug from the entry path:
-    // "2026-04-22-foo/index.md" -> "foo"
-    // "foo/index.md"            -> "foo"
-    // "foo.md"                  -> "foo"
-    generateId: ({ entry }) =>
-      entry
+    // Slug resolution, in order of precedence:
+    //   1. `slug` in the post's frontmatter (explicit override)
+    //   2. folder name with the YYYY-MM-DD- prefix stripped and /index removed
+    // Examples:
+    //   "2026-04-22-foo/index.md" -> "foo"
+    //   "foo/index.md"            -> "foo"
+    //   "foo.md"                  -> "foo"
+    //   frontmatter `slug: bar`   -> "bar"
+    generateId: ({ entry, data }) => {
+      if (typeof data.slug === 'string' && data.slug.length > 0) {
+        return data.slug;
+      }
+      return entry
         .replace(/\.(md|mdx)$/, '')          // drop extension
         .replace(/\/index$/, '')             // drop trailing /index
-        .replace(/^\d{4}-\d{2}-\d{2}-/, ''), // strip leading YYYY-MM-DD- prefix
+        .replace(/^\d{4}-\d{2}-\d{2}-/, ''); // strip leading YYYY-MM-DD- prefix
+    },
   }),
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
     description: z.string(),
+    slug: z.string().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
   }),

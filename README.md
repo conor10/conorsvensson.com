@@ -28,6 +28,8 @@ Posts live in `src/content/writing/` as a folder per post. To add a new one:
 
 The date prefix on the folder name is for filesystem ordering only. It's stripped to produce the URL — `2026-04-22-context-windows/` becomes `/writing/context-windows/`. Posts are sorted on the index by the `date` field in frontmatter, not by folder name.
 
+To override the URL slug (e.g. to rename a post's URL without renaming its folder), set a `slug` field in frontmatter. That value wins over the folder-derived slug.
+
 ### Frontmatter
 
 ```yaml
@@ -35,6 +37,7 @@ The date prefix on the folder name is for filesystem ordering only. It's strippe
 title: "Post title"
 date: 2026-04-22
 description: "One-line summary used for OG/Twitter cards and the feed."
+slug: "custom-url"         # optional, overrides the folder-derived slug
 tags: ["agents", "web3"]   # optional
 draft: false               # optional, defaults to false
 ---
