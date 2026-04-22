@@ -10,7 +10,7 @@ import { FORMSPREE_ENDPOINT } from '../consts';
     <h1>Contact</h1>
     <p>
       For most things, dropping a note here is the fastest way to reach me.
-      I read everything and reply when I can — usually within a few days.
+      I read everything and usually reply within a few days.
     </p>
 
     <form id="contact-form" class="contact-form" action={FORMSPREE_ENDPOINT} method="POST">
@@ -24,7 +24,7 @@ import { FORMSPREE_ENDPOINT } from '../consts';
       </label>
       <label>
         <span>Message</span>
-        <textarea name="message" rows="6" required></textarea>
+        <textarea name="message" rows="5" required></textarea>
       </label>
 
       <!-- Honeypot for spam bots; Formspree ignores submissions with this filled. -->
