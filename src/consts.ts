@@ -5,8 +5,7 @@ export const SITE_URL = 'https://conorsvensson.com';
 export const AUTHOR = 'Conor Svensson';
 export const AUTHOR_TWITTER = '@ConorSvensson';
 
-// TODO: replace with your Buttondown username.
-export const BUTTONDOWN_USERNAME = 'YOUR_BUTTONDOWN_USERNAME';
+export const BUTTONDOWN_USERNAME = 'csvensson';
 
 // Google Analytics 4 measurement ID. Loaded only in production builds.
 // Set to an empty string to disable analytics entirely.
