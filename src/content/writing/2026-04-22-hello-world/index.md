@@ -1,14 +1,16 @@
 ---
 title: "Hello, world"
-description: "A placeholder post to verify typography, code blocks, and the feed all render correctly."
-date: 2026-04-21
+description: "A placeholder post to verify typography, code blocks, and co-located images render correctly."
+date: 2026-04-22
 tags: ["meta", "astro"]
 draft: true
 ---
 
-This post exists purely so the typography, syntax highlighting, and RSS feed
-have something to chew on before the real writing starts. You can delete it
-once you've written something to replace it.
+This post exists purely so the typography, syntax highlighting, and image
+pipeline have something to chew on before the real writing starts. You can
+delete this folder once you've written something to replace it.
+
+![Example co-located image — this file lives in the same folder as the post.](./example.svg)
 
 ## A bit of code
 
@@ -38,7 +40,7 @@ console.log(firstTagged([latest], "meta"));
 And a shell snippet, for good measure:
 
 ```sh
-npm run build && npx wrangler pages deploy
+git add . && git commit -m "publish" && git push
 ```
 
 Inline code looks like this: `await fetch('/feed.xml')`.

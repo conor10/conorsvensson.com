@@ -7,7 +7,7 @@ import type { APIContext } from 'astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 export async function GET(context: APIContext) {
-  const posts = (await getCollection('writing', ({ data }) => !data.draft))
+  const posts = (await getCollection('writing', ({ data }) => !import.meta.env.PROD || !data.draft))
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
   const renderers = await loadRenderers([mdxContainerRenderer()]);

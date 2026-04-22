@@ -2,11 +2,23 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const writing = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/writing' }),
+  loader: glob({
+    pattern: '**/*.{md,mdx}',
+    base: './src/content/writing',
+    // Derive the slug from the entry path:
+    // "2026-04-22-foo/index.md" -> "foo"
+    // "foo/index.md"            -> "foo"
+    // "foo.md"                  -> "foo"
+    generateId: ({ entry }) =>
+      entry
+        .replace(/\.(md|mdx)$/, '')          // drop extension
+        .replace(/\/index$/, '')             // drop trailing /index
+        .replace(/^\d{4}-\d{2}-\d{2}-/, ''), // strip leading YYYY-MM-DD- prefix
+  }),
   schema: z.object({
     title: z.string(),
-    description: z.string(),
     date: z.coerce.date(),
+    description: z.string(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
   }),

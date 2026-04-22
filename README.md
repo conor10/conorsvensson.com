@@ -1,6 +1,6 @@
 # conorsvensson.com
 
-Personal site built with [Astro](https://astro.build/). TypeScript, MDX, content collections, RSS, sitemap, dual-theme Shiki syntax highlighting.
+Personal site built with [Astro](https://astro.build/). TypeScript, MDX, content collections, RSS, sitemap, dual-theme Shiki syntax highlighting. Deployed to GitHub Pages at [conorsvensson.com](https://conorsvensson.com).
 
 ## Local development
 
@@ -16,50 +16,43 @@ npm run build
 npm run preview
 ```
 
+In `dev` mode, draft posts are visible so you can iterate on them. They're excluded from `build` (and therefore from the live site, sitemap, and feed).
+
 ## Writing posts
 
-Posts live in `src/content/writing/` as `.md` or `.mdx`. Each post requires frontmatter:
+Posts live in `src/content/writing/` as a folder per post. To add a new one:
+
+1. Create a folder named `YYYY-MM-DD-post-slug/`, e.g. `src/content/writing/2026-04-22-context-windows/`.
+2. Add an `index.md` inside it with frontmatter (see below).
+3. Drop any images into the same folder and reference them with a relative path, e.g. `![alt](./diagram.png)`. Astro processes them through the image pipeline automatically (resize, format conversion, content-hashed URL).
+
+The date prefix on the folder name is for filesystem ordering only. It's stripped to produce the URL — `2026-04-22-context-windows/` becomes `/writing/context-windows/`. Posts are sorted on the index by the `date` field in frontmatter, not by folder name.
+
+### Frontmatter
 
 ```yaml
 ---
 title: "Post title"
+date: 2026-04-22
 description: "One-line summary used for OG/Twitter cards and the feed."
-date: 2026-04-21
-tags: ["agents", "web3"]
-draft: false
+tags: ["agents", "web3"]   # optional
+draft: false               # optional, defaults to false
 ---
 ```
 
-Drafts (`draft: true`) are excluded from the site, the writing index, and the RSS feed.
+- `draft: true` hides the post from the production build (and the sitemap and feed), but it still renders in `npm run dev` so you can iterate.
 
-- Feed: `/feed.xml` (full post content)
-- Sitemap: `/sitemap.xml`
+### Feeds
 
-## Deploying to Cloudflare Pages
+- RSS feed (full post content): `/feed.xml`
+- Sitemap: `/sitemap-index.xml`
 
-The site is a static build. Two options:
+Both regenerate on every build.
 
-**Option A — Git integration (recommended)**
+## Deploying
 
-Connect the repo in the Cloudflare Pages dashboard with:
-
-- Build command: `npm run build`
-- Build output directory: `dist`
-
-**Option B — Direct upload via Wrangler**
-
-```sh
-npm run build
-npx wrangler pages deploy
-```
-
-`wrangler.toml` points to `./dist`, so no extra flags are needed. On first run, Wrangler will prompt you to create the Pages project.
+Pushes to `main` auto-deploy to GitHub Pages via `.github/workflows/deploy.yml`. No manual step needed.
 
 ## TODOs
 
-Search the repo for `TODO` — you'll also find these called out:
-
-- `src/consts.ts` — set `BUTTONDOWN_USERNAME` to your Buttondown username.
-- `src/pages/index.astro` — tighten the home intro paragraph.
-- `src/pages/about.astro` — refine the bio paragraph and confirm the contact email.
-- `public/og-default.svg` — replace with a 1200×630 PNG for best social-card rendering (some platforms don't embed SVG reliably).
+- `public/og-default.svg` — consider replacing with a 1200×630 PNG for best social-card rendering (some platforms don't embed SVG reliably).
