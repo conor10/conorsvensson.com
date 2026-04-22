@@ -12,12 +12,19 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+// Per-post OG image. Resolution order:
+//   1. ogImage in frontmatter (explicit override)
+//   2. auto-generated card at /og/{slug}.png
+//   3. (site default handled in BaseHead)
+const ogImage = post.data.ogImage ?? `/og/${post.id}.png`;
 ---
 <PostLayout
   title={post.data.title}
   description={post.data.description}
   date={post.data.date}
   tags={post.data.tags}
+  image={ogImage}
 >
   <Content />
 </PostLayout>

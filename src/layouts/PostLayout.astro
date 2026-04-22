@@ -7,15 +7,17 @@ interface Props {
   description: string;
   date: Date;
   tags?: string[];
+  image?: string;
 }
 
-const { title, description, date, tags = [] } = Astro.props;
+const { title, description, date, tags = [], image } = Astro.props;
 ---
 <BaseLayout
   title={title}
   description={description}
   type="article"
   publishedTime={date}
+  image={image}
 >
   <article class="prose">
     <header>

@@ -56,6 +56,8 @@ Both regenerate on every build.
 
 Pushes to `main` auto-deploy to GitHub Pages via `.github/workflows/deploy.yml`. No manual step needed.
 
-## TODOs
+## Social cards (Open Graph / Twitter)
 
-- `public/og-default.svg` — consider replacing with a 1200×630 PNG for best social-card rendering (some platforms don't embed SVG reliably).
+- **Site-wide default** is `public/og-default.png` (1200×630). Any page without its own card uses this.
+- **Per-post cards are auto-generated** from the post title and date via [`astro-og-canvas`](https://github.com/delucis/astro-og-canvas). Routes are at `/og/{slug}.png`; they build once per prod build.
+- **To override a post's card**, set `ogImage: "/path/to/image.png"` in its frontmatter (supports any URL or public-absolute path).
