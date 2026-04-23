@@ -1,0 +1,85 @@
+---
+title: "What we learned trying to give an agent our whole company"
+description: "How a small team built text-native archives of its own operations so agents could work with them like codebases"
+date: 2026-04-23
+tags: [agentic-engineering, workflow]
+---
+
+import VegaChart from '../../../components/VegaChart.astro';
+import spec from './context-windows.json';
+
+Enscribe is being built by a remote-first team. Everything we do is recorded somewhere — we transcribe our video calls, chat via instant messaging, store our docs in Google Drive, host our code in GitHub. All of this should be useful context for an agent, but very little is.
+
+We'd look at the various integrations such as Google Drive in ChatGPT, and whilst you could connect to your drive, you'd have to pull out specific documents to include them in a chat session and be hit with hard limits of 10 files for a single prompt.
+
+We even optimised our code repos so that there was a single source for our product landing page, documentation and blogs, all conveniently stored in Markdown. Our thinking was that this would provide everything an LLM would need to know about the current state of the project.
+
+## Context windows
+
+The limiting factor here was not our ability to surface useful information for the agents, it was the *context window* of these agents.
+
+Context windows are the working memories that you have with an LLM. When you establish a new session with a generative AI chatbot such as ChatGPT or Claude the context will have minimal information in it, beyond the instructions that OpenAI or Anthropic have told it to load with.
+
+When you start typing requests and adding files to the discussion, the history of your discussion and information about any shared files is summarised in the context window associated with your session.
+
+<VegaChart spec={spec} />
+
+Currently, the leading models use a context window size of one million tokens and whilst they will continue to grow, the volume of data they can keep in memory, remains orders of magnitude smaller than the size of the datasets these models are trained on which is internet scale.
+
+In order to prime agents with useful information to serve specific requests, they are given skills files and instructions specific to projects. These documents are written in markdown with names such as SKILLS.md and AGENTS.md and give the agents the information they need to be more helpful to the people they're speaking with.
+
+For instance, Claude provides a [Powerpoint skill](https://github.com/anthropics/skills/blob/main/skills/pptx/SKILL.md) which is a file describing how to create compelling slide decks.
+
+Whilst in the Claude app, skills such as this are dressed up as software plugins, they're a text file behind the scenes.
+
+This is because LLMs thrive on text. Hence if you want to train an agent about your organisation you want to feed it text. 
+
+Skills and agent files alone aren't enough for this, they teach agents how to do things. They can't teach agents about your organisation, as they lack the data about it.
+
+The answer isn't increasing context windows, it's converting your organisational knowledge into archives that the agents can explore on demand.
+
+## What we built
+
+We started thinking about how best to train our own agents with richer information about our organisation.
+
+We already had data being recorded about what the team was building, but we needed to find a way to consolidate this into an easily digestible format for LLMs.
+
+We wanted to have data repositories that can then be passed to an agent, much like a code repo is, and the agent can explore them like it does a codebase. 
+
+Instead of leaving our data spread across multiple sources, we've started consolidating data into a number of different LLM-friendly formats, which makes it far easier to provide context when required about what's happening.
+
+Our code related assets remain in GitHub. However, we want to ensure that we're regularly updating our blog and documentation pages with new features and changes as we make them. 
+
+With Claude Code and OpenAI's Codex, LLMs are already adept at working with these source formats, and while we don't need to do additional work once they're in these repos, we've consciously made the decision to try and keep as much information in one place instead of spread across lots of separate repositories.
+
+All our video calls are being transcribed and summarised. We set up daily jobs that create markdown versions of these files and stores them in project specific folders. Likewise our instant messaging discussions are being exported in markdown to folders.
+
+These folders are then being indexed for agents by having AGENTS.md files in their root, with index files that break down how the individual files are organised hierarchically.
+
+For instance, with Enscribe we have a knowledge base folder containing directories for our meeting notes and chat. In this location we have markdown archives of our discussions organised by date.
+
+```sh
+knowledge-base/
+  meeting-notes/
+    2026/04-April/2026-04-07-Team-sync-2026-04-07-11-30-BST.md
+    ...
+  text-chat/discord/team/
+    2026/2026-01-27.md
+    ...
+  INDEX.md
+  AGENTS.md
+```
+
+These are supplemented with:
+- an INDEX.md file which lists the number of files by month, year and type as well as the most recent files
+- an AGENTS.md file outlining the retrieval protocol to use
+
+This same pattern is then being extended to other tools such as collaboration tools and those parts of the organisation such as our finance systems where there's useful data being generated.
+
+Now when someone wants to know what we decided last week regarding the latest feature for Enscribe, the agent can answer for us. Before, this would have required searching through meeting notes or chat histories.
+
+Working memory will likely remain a constraint in the foreseeable future, but by ensuring we have high quality data archives in text-native archives, we have the right foundations to share topical information with agents when we need to.
+
+Agents may not yet be able to store all of this in working memory, but we can be confident that as their capabilities increase we'll be able to take advantage of them quickly, without being constrained by a specific vendor platform.
+
+The agents will get better, and the data archives you build now will still be useful when they do, but the inverse is not true.

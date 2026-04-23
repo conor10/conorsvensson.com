@@ -1,0 +1,101 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "LLM context window sizes, June 2018 to April 2026. Source: public announcements and API docs.",
+  "width": 700,
+  "height": 340,
+  "autosize": {"type": "fit", "contains": "padding"},
+  "data": {
+    "values": [
+      {"model": "GPT-1", "date": "2018-06-11", "tokens": 512, "developer": "OpenAI", "label": true},
+      {"model": "GPT-2", "date": "2019-02-14", "tokens": 1024, "developer": "OpenAI", "label": true},
+      {"model": "GPT-3", "date": "2020-06-11", "tokens": 2048, "developer": "OpenAI", "label": true},
+      {"model": "ChatGPT (GPT-3.5)", "date": "2022-11-30", "tokens": 4096, "developer": "OpenAI", "label": true},
+      {"model": "LLaMA 1", "date": "2023-02-24", "tokens": 2048, "developer": "Meta"},
+      {"model": "GPT-4", "date": "2023-03-14", "tokens": 8192, "developer": "OpenAI"},
+      {"model": "GPT-4 32K", "date": "2023-03-14", "tokens": 32768, "developer": "OpenAI"},
+      {"model": "Claude 1", "date": "2023-03-14", "tokens": 9000, "developer": "Anthropic"},
+      {"model": "Claude 100K", "date": "2023-05-11", "tokens": 100000, "developer": "Anthropic", "label": true},
+      {"model": "Llama 2", "date": "2023-07-18", "tokens": 4096, "developer": "Meta"},
+      {"model": "GPT-4 Turbo", "date": "2023-11-06", "tokens": 128000, "developer": "OpenAI"},
+      {"model": "Claude 2.1", "date": "2023-11-21", "tokens": 200000, "developer": "Anthropic", "label": true},
+      {"model": "Gemini 1.0", "date": "2023-12-06", "tokens": 32000, "developer": "Google"},
+      {"model": "Gemini 1.5 Pro", "date": "2024-02-15", "tokens": 1000000, "developer": "Google", "label": true, "milestone": "First 1M+"},
+      {"model": "Claude 3", "date": "2024-03-04", "tokens": 200000, "developer": "Anthropic"},
+      {"model": "Llama 3", "date": "2024-04-18", "tokens": 8192, "developer": "Meta"},
+      {"model": "GPT-4o", "date": "2024-05-13", "tokens": 128000, "developer": "OpenAI"},
+      {"model": "Gemini 1.5 Pro 2M", "date": "2024-06-27", "tokens": 2000000, "developer": "Google"},
+      {"model": "Llama 3.1", "date": "2024-07-23", "tokens": 128000, "developer": "Meta"},
+      {"model": "Llama 4 Scout", "date": "2025-04-05", "tokens": 10000000, "developer": "Meta", "label": true, "milestone": "First 10M+"},
+      {"model": "GPT-4.1", "date": "2025-04-14", "tokens": 1000000, "developer": "OpenAI"},
+      {"model": "GPT-5", "date": "2025-08-07", "tokens": 400000, "developer": "OpenAI"},
+      {"model": "Claude Sonnet 4.5", "date": "2025-09-29", "tokens": 200000, "developer": "Anthropic"},
+      {"model": "Gemini 3 Pro", "date": "2025-11-18", "tokens": 1000000, "developer": "Google"},
+      {"model": "Claude Opus 4.6", "date": "2026-02-05", "tokens": 1000000, "developer": "Anthropic"},
+      {"model": "GPT-5.4", "date": "2026-03-05", "tokens": 1000000, "developer": "OpenAI"},
+      {"model": "Claude Opus 4.7", "date": "2026-04-16", "tokens": 1000000, "developer": "Anthropic", "label": true}
+    ]
+  },
+  "layer": [
+    {
+      "mark": {"type": "circle", "size": 140, "opacity": 0.82, "stroke": "white", "strokeWidth": 1},
+      "encoding": {
+        "x": {
+          "field": "date",
+          "type": "temporal",
+          "title": "Release date",
+          "axis": {"format": "%Y", "tickCount": 9, "labelAngle": 0}
+        },
+        "y": {
+          "field": "tokens",
+          "type": "quantitative",
+          "title": "Context window (tokens)",
+          "scale": {"type": "log", "domain": [256, 20000000]},
+          "axis": {"format": "~s"}
+        },
+        "color": {
+          "field": "developer",
+          "type": "nominal",
+          "scale": {
+            "domain": ["OpenAI", "Anthropic", "Google", "Meta"],
+            "range": ["#10a37f", "#cc785c", "#4285f4", "#1877f2"]
+          },
+          "legend": {"title": null, "orient": "top-left", "offset": 10}
+        },
+        "tooltip": [
+          {"field": "model", "type": "nominal", "title": "Model"},
+          {"field": "date", "type": "temporal", "title": "Released", "format": "%b %Y"},
+          {"field": "tokens", "type": "quantitative", "title": "Tokens", "format": ","},
+          {"field": "developer", "type": "nominal", "title": "Developer"}
+        ]
+      }
+    },
+    {
+      "transform": [{"filter": "datum.label"}],
+      "mark": {"type": "text", "dy": -14, "fontSize": 10, "fontWeight": 500},
+      "encoding": {
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "tokens", "type": "quantitative"},
+        "text": {"field": "model"}
+      }
+    },
+    {
+      "transform": [{"filter": "datum.milestone"}],
+      "mark": {"type": "text", "dy": 22, "fontSize": 10, "fontStyle": "italic", "color": "#b91c1c"},
+      "encoding": {
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "tokens", "type": "quantitative"},
+        "text": {"field": "milestone"}
+      }
+    }
+  ],
+  "config": {
+    "background": "transparent",
+    "view": {"stroke": "transparent"},
+    "axis": {
+      "labelFont": "system-ui, sans-serif",
+      "titleFont": "system-ui, sans-serif",
+      "titleFontWeight": 500,
+      "gridOpacity": 0.15
+    }
+  }
+}
