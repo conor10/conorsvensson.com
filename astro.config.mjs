@@ -11,6 +11,10 @@ export default defineConfig({
         light: 'github-light',
         dark: 'github-dark',
       },
+      // Emit both theme colours as CSS variables (--shiki-light and
+      // --shiki-dark) instead of baking the light theme into a bare
+      // inline `color:`. Our CSS switches between them via [data-theme].
+      defaultColor: false,
     },
   },
 });
