@@ -1,0 +1,21 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Minimal bar chart to verify the Vega-Lite SSR pipeline.",
+  "width": 420,
+  "height": 220,
+  "data": {
+    "values": [
+      {"month": "Jan", "count": 3},
+      {"month": "Feb", "count": 6},
+      {"month": "Mar", "count": 4},
+      {"month": "Apr", "count": 9},
+      {"month": "May", "count": 7},
+      {"month": "Jun", "count": 12}
+    ]
+  },
+  "mark": {"type": "bar", "cornerRadiusEnd": 2},
+  "encoding": {
+    "x": {"field": "month", "type": "nominal", "axis": {"labelAngle": 0}, "title": null},
+    "y": {"field": "count", "type": "quantitative", "title": "Posts"}
+  }
+}

@@ -6,6 +6,9 @@ tags: ["meta", "astro"]
 draft: true
 ---
 
+import VegaChart from '../../../components/VegaChart.astro';
+import chartSpec from './chart.json';
+
 This post exists purely so the typography, syntax highlighting, and image
 pipeline have something to chew on before the real writing starts. You can
 delete this folder once you've written something to replace it.
@@ -44,6 +47,14 @@ git add . && git commit -m "publish" && git push
 ```
 
 Inline code looks like this: `await fetch('/feed.xml')`.
+
+## A chart
+
+The chart below is rendered at build time from a Vega-Lite spec
+co-located with this post (`./chart.json`). No client-side JS is loaded
+to display it — the SVG is baked into the HTML output.
+
+<VegaChart spec={chartSpec} />
 
 ## Longer prose
 
