@@ -1,30 +1,38 @@
 ---
 import { compile } from 'vega-lite';
 import { parse, View } from 'vega';
-import type { TopLevelSpec } from 'vega-lite';
 
 interface Props {
-  spec: TopLevelSpec | Record<string, any>;
+  spec: object;
 }
 
 const { spec } = Astro.props;
 
-// Compile Vega-Lite -> Vega, then render the Vega runtime to an SVG string
-// at build time. `renderer: 'none'` means we never touch a browser DOM;
-// toSVG() produces the final markup itself.
-const vgSpec = compile(spec as TopLevelSpec).spec;
-const runtime = parse(vgSpec);
+const vegaSpec = compile(spec as any).spec;
+const runtime = parse(vegaSpec);
 const view = new View(runtime, { renderer: 'none' });
-const svg = await view.toSVG();
+let svg = await view.toSVG();
+
+// Strip the explicit width/height attributes from the root <svg> so CSS
+// (width: 100%, height: auto) governs rendered size. viewBox is left in
+// place so the intrinsic aspect ratio is preserved and height scales.
+svg = svg.replace(/<svg\b([^>]*)>/, (_match, attrs: string) => {
+  const cleaned = attrs
+    .replace(/\s+width="[^"]*"/g, '')
+    .replace(/\s+height="[^"]*"/g, '');
+  return `<svg${cleaned}>`;
+});
 ---
-<figure class="vega-chart" set:html={svg}></figure>
+
+<figure class="vega-chart" set:html={svg} />
 
 <style>
   .vega-chart {
-    margin: 1.75rem 0;
+    margin: 2rem 0;
+    width: 100%;
   }
   .vega-chart :global(svg) {
-    max-width: 100%;
+    width: 100%;
     height: auto;
     display: block;
   }

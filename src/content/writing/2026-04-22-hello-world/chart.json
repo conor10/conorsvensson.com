@@ -1,8 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "Minimal bar chart to verify the Vega-Lite SSR pipeline.",
-  "width": 420,
+  "width": 700,
   "height": 220,
+  "autosize": {"type": "fit", "contains": "padding"},
   "data": {
     "values": [
       {"month": "Jan", "count": 3},
