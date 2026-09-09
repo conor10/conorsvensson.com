@@ -1,0 +1,57 @@
+---
+import 'photoswipe/style.css';
+import { linkPostImages } from '../utils/image-lightbox.mjs';
+
+const content = linkPostImages(await Astro.slots.render('default'));
+---
+
+<div data-post-images set:html={content} />
+
+<script>
+  import PhotoSwipeLightbox from 'photoswipe/lightbox';
+
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '[data-post-images]',
+    children: 'a[data-pswp-width]',
+    pswpModule: () => import('photoswipe'),
+    bgOpacity: 0.97,
+    // Open to fit the screen; the zoom button then shows actual image pixels.
+    secondaryZoomLevel: 1,
+    maxZoomLevel: (level) => Math.max(1, level.fit * 4),
+    padding: { top: 60, bottom: 24, left: 16, right: 16 },
+  });
+
+  lightbox.init();
+</script>
+
+<style is:global>
+  [data-post-images] .post-image-link {
+    display: inline-block;
+    max-width: 100%;
+    vertical-align: bottom;
+    cursor: zoom-in;
+  }
+
+  [data-post-images] .post-image-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+
+  .pswp {
+    --pswp-bg: var(--bg);
+    --pswp-icon-color: var(--fg);
+    --pswp-icon-color-secondary: var(--bg);
+    --pswp-icon-stroke-color: var(--bg);
+    --pswp-error-text-color: var(--fg);
+  }
+
+  .pswp .pswp__counter {
+    color: var(--fg);
+    text-shadow: none;
+  }
+
+  .pswp .pswp__button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -4px;
+  }
+</style>

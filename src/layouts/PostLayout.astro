@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import PostImages from '../components/PostImages.astro';
 
 interface Props {
   title: string;
@@ -30,6 +31,6 @@ const { title, description, date, tags = [], image } = Astro.props;
         ))}
       </div>
     </header>
-    <slot />
+    <PostImages><slot /></PostImages>
   </article>
 </BaseLayout>
