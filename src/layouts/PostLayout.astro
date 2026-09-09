@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import PostImages from '../components/PostImages.astro';
+import PostCitation from '../components/PostCitation.astro';
 
 interface Props {
   title: string;
@@ -32,5 +33,6 @@ const { title, description, date, tags = [], image } = Astro.props;
       </div>
     </header>
     <PostImages><slot /></PostImages>
+    <PostCitation title={title} date={date} />
   </article>
 </BaseLayout>

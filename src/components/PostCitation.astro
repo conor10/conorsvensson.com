@@ -1,0 +1,126 @@
+---
+import { AUTHOR, SITE_URL } from '../consts';
+import { createPostCitation } from '../utils/post-citation.mjs';
+
+interface Props {
+  title: string;
+  date: Date;
+}
+
+const { title, date } = Astro.props;
+const url = new URL(Astro.url.pathname, Astro.site ?? SITE_URL).toString();
+const citation = createPostCitation({ author: AUTHOR, title, date, url });
+---
+
+<section class="post-citation" aria-labelledby="cite-this-post">
+  <h2 id="cite-this-post">Cite this post</h2>
+  <p class="citation-text">{citation.textBeforeUrl} <a href={url}>{url}</a></p>
+  <div class="citation-actions">
+    <button type="button" data-copy-text={citation.text} data-copy-label="Citation" hidden>Copy citation</button>
+    <span role="status" aria-live="polite"></span>
+  </div>
+  <details>
+    <summary>BibTeX</summary>
+    <pre><code>{citation.bibtex}</code></pre>
+    <div class="citation-actions">
+      <button type="button" data-copy-text={citation.bibtex} data-copy-label="BibTeX" hidden>Copy BibTeX</button>
+      <span role="status" aria-live="polite"></span>
+    </div>
+  </details>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.post-citation button[data-copy-text]').forEach((button) => {
+    const status = button.parentElement?.querySelector<HTMLElement>('[role="status"]');
+    if (!status) return;
+
+    button.hidden = false;
+    button.addEventListener('click', async () => {
+      button.disabled = true;
+      status.textContent = '';
+      try {
+        await navigator.clipboard.writeText(button.dataset.copyText ?? '');
+        status.textContent = `${button.dataset.copyLabel} copied.`;
+      } catch {
+        status.textContent = 'Automatic copy unavailable. Select and copy the text above.';
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+</script>
+
+<style>
+  .post-citation {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+
+  .post-citation h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+  }
+
+  .citation-text {
+    margin: 0 0 0.75rem;
+    color: var(--fg-muted);
+    overflow-wrap: anywhere;
+  }
+
+  .citation-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+  }
+
+  button {
+    padding: 0.4rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-muted);
+    color: var(--fg);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  button:hover {
+    border-color: var(--fg-muted);
+  }
+
+  button:focus-visible,
+  summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  button:disabled {
+    cursor: wait;
+  }
+
+  [role='status'] {
+    color: var(--fg-muted);
+    font-size: 0.85rem;
+  }
+
+  details {
+    margin-top: 1rem;
+  }
+
+  summary {
+    width: fit-content;
+    cursor: pointer;
+    color: var(--fg-muted);
+  }
+
+  pre {
+    margin: 0.75rem 0;
+    background: var(--bg-muted);
+    color: var(--fg);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-size: 0.8rem;
+  }
+</style>
